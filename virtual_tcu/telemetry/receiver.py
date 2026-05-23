@@ -8,10 +8,12 @@ from virtual_tcu.telemetry.logger import TelemetryLogger
 from virtual_tcu.telemetry.model import Telemetry
 from virtual_tcu.telemetry.parser import parse_fh6_packet
 
+
 class TelemetryReceiver:
     def __init__(self, logger: TelemetryLogger):
         self._sock: Optional[socket.socket] = None
         self._running = threading.Event()
+        self._thread: Optional[threading.Thread] = None
         self._latest: Optional[Telemetry] = None
         self._latest_raw: Optional[bytes] = None
         self._lock = threading.Lock()
@@ -21,25 +23,33 @@ class TelemetryReceiver:
         self.error_msg = ""
 
     def start(self) -> bool:
+        if self._running.is_set():
+            self.stop()
+        
         try:
             self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             self._sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            self._sock.settimeout(1.0)
+            self._sock.settimeout(0.5)
             self._sock.bind((Cfg.UDP_IP, Cfg.UDP_PORT))
         except OSError as e:
             self.error_msg = str(e)
             return False
+            
         self._running.set()
-        threading.Thread(target=self._loop, daemon=True, name="UDP").start()
+        self._thread = threading.Thread(target=self._loop, daemon=True, name="UDP")
+        self._thread.start()
         return True
 
     def stop(self):
         self._running.clear()
+        if self._thread is not None and self._thread.is_alive():
+            self._thread.join(timeout=1.0)
         if self._sock:
             try:
                 self._sock.close()
-            except:
+            except Exception:
                 pass
+            self._sock = None
 
     def _loop(self):
         while self._running.is_set():
@@ -47,11 +57,13 @@ class TelemetryReceiver:
                 raw, _ = self._sock.recvfrom(1024)
                 td = parse_fh6_packet(raw)
                 if td is not None:
-                    self.packets_total += 1
-                    self.last_recv_time = time.time()
+                    now = time.time()
                     with self._lock:
+                        self.packets_total += 1
+                        self.last_recv_time = now
                         self._latest = td
                         self._latest_raw = raw
+                    # Ensure logger call is outside the lock to avoid blocking UDP ingest
                     self._logger.write_packet(raw)
             except socket.timeout:
                 continue
@@ -71,4 +83,5 @@ class TelemetryReceiver:
 
     @property
     def is_live(self) -> bool:
-        return (time.time() - self.last_recv_time) < 2.5
+        with self._lock:
+            return (time.time() - self.last_recv_time) < 2.5
