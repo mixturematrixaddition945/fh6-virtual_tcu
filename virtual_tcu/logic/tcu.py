@@ -44,6 +44,7 @@ class TCULogic:
         self._mode_lock = threading.Lock()
         self._data_lock = threading.RLock()
         
+        # IO offloading için dedicated executor'lar
         self._audio_executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="TCU_Audio")
         self._discord_executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="TCU_Discord")
 
@@ -382,6 +383,7 @@ class TCULogic:
         self._graph_buffer.push(td)
         self._watchdog.heartbeat()
         
+        # O(1) Thread Offload - Prevents telemetry processing stall if Discord RPC is slow
         if self._discord_rpc is not None and self._config.get("feat_discord_rpc"):
             self._discord_executor.submit(
                 self._discord_rpc.update, 
@@ -634,11 +636,11 @@ class TCULogic:
             self._slip_streak = 0
             return False
             
-        if td.drivetrain == 0:  
+        if td.drivetrain == 0:  # FWD
             slip = max(td.slip_fl, td.slip_fr)
-        elif td.drivetrain == 1:  
+        elif td.drivetrain == 1:  # RWD
             slip = max(td.slip_rl, td.slip_rr)
-        else:  
+        else:  # AWD or unknown
             slip = max(td.slip_fl, td.slip_fr, td.slip_rl, td.slip_rr)
 
         if slip > 1.2:
